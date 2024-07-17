@@ -1,61 +1,44 @@
-'use client'
-import styles from './page.module.css'
-import Image from "next/image";
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { color } from 'framer-motion';
+'use client';
+import React, { useEffect, useState } from 'react';
+import Landing from "../components/landing";
+import Projects from '../components/projects';
+import Description from "../components/description";
+import SlidingGallery from '../components/slidingGallery';
+import Footer from '../components/footer';
+import Preloader from '../components/preloader'
+import { AnimatePresence } from 'framer-motion';
+
 
 export default function Home() {
 
-  const firstText = useRef(null);
-  const secondText = useRef(null);
-  const slider = useRef(null);
-  let xPercent = 0;
-  let direction = -1;
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=>{
-    gsap.registerPlugin(ScrollTrigger);
-    requestAnimationFrame(animation);
+  useEffect(() => {
+    (
+      async()=>{
+        const LocomotiveScroll = (await import('locomotive-scroll')).default
+        const locomotiveScroll = new LocomotiveScroll();
 
-    gsap.to(slider.current,{
-      scrollTrigger:{
-        trigger: document.documentElement,
-        start:0,
-        end: window.innerHeight,
-        scrub: 0.25,
-        onUpdate: e => direction = e.direction * -1
-      },
-      x: "-500px"
-    })
-  },[])
+        setTimeout(() => {
+          setIsLoading(false);
+          document.body.style.cursor = 'default'
+          window.scrollTo(0,0);
+        }, 2000);
+      }
+    )()
+  }, [])
 
-  const animation=()=>{
-    if(xPercent <= -100){
-      xPercent = 0;
-    }
-    if(xPercent > 0){
-      xPercent = -100;
-    }
-    gsap.set(firstText.current, {xPercent: xPercent})
-    gsap.set(secondText.current,{xPercent: xPercent})
-    xPercent += 0.1 * direction;
-    requestAnimationFrame(animation);
-  }
 
   return (
-    <main className={styles.main}>
-      <Image 
-        fill={true}
-        src="/images/snype_pic.png"
-        alt="image"
-      />
-      <div className={styles.sliderContainer}>
-        <div ref={slider} className={styles.slider}>
-          <p ref={firstText}>Shamin Jayed</p>
-          <p ref={secondText}>Shamin Jayed</p>
-        </div>
-      </div>
+    <main>
+      <AnimatePresence mode='wait'>
+        {isLoading && <Preloader />}
+      </AnimatePresence>
+      <Landing />
+      <Description />
+      <Projects />
+      <SlidingGallery />
+      <Footer/>
     </main>
-  );
+  )
 }

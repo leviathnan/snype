@@ -5,16 +5,14 @@
   height: 100vh;
   background-color: rgb(41,41,41);
   color: white;
-  z-index: 10;
-  box-sizing: border-box;
-
+  z-index: 3;
   .body{
+    height: 100%;
     padding: 90px;
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
     flex-direction: column;
-    gap: 10rem;
 
     .nav{
       display: flex;
@@ -22,7 +20,6 @@
       font-size: 56px;
       gap: 12px;
       margin-top: 80px;
-      z-index: 10;
 
       .header{
         color: rgb(153, 153, 153);
@@ -30,6 +27,11 @@
         text-transform: uppercase;
         font-size: 11px;
         margin-bottom: 40px;
+      }
+      a{
+        text-decoration: none;
+        color: white;
+        font-weight: 300;
       }
     }
   }

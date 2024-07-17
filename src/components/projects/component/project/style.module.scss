@@ -1,48 +1,38 @@
-.modalContainer{
-  height: 300px;
-  width: 350px;
+.project{
   display: flex;
+  width: 100%;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  position: absolute;
-  overflow: hidden;
-  pointer-events: none;
+  padding: 50px 100px 50px 100px;
+  border-top: 1px solid rgb(201, 201, 201);
+  cursor: pointer;
+  transition: all 0.2s;
 
-  .modalSlider{
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    transition: top 0.5s cubic-bezier(0.76, 0, 0.24, 1);
-  }
-
-  .modal{
-    position: relative;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: gray;
-  }
-  
-  .modal img{
-    height: auto;
-    width: auto;
+  h2{
+      font-size: 60px;
+      margin: 0px;
+      font-weight: 400;
+      transition: all 0.4s;
   }
 
-  .cursor, .cursorLabel{
-    width: 80px;
-    height: 80px;
-    background-color: #455CE9;
-    position: absolute;
-    pointer-events: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
+  p{
+      transition: all 0.4s;
+      font-weight: 300;
   }
-  
-  .cursorLabel{
-    background-color: transparent;
+
+  &:last-of-type{
+      border-bottom: 1px solid rgb(201, 201, 201);
+  }
+
+  &:hover{
+      opacity: 0.5;
+
+      h2{
+          transform: translateX(-10px);
+      }
+
+      p{
+          transform: translateX(10px);
+      }
   }
 }

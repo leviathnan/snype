@@ -1,24 +1,81 @@
-'use client'
+'use client';
 import styles from './style.module.scss'
-import { useState } from 'react'
-import Nav from './nav/index'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import Link from 'next/link';
+import Nav from './nav'
 import { AnimatePresence } from 'framer-motion';
+import { usePathname } from "next/navigation";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Magnetic from '../../common/magnetic';
+import Rounded from '../../common/roundedButton';
+import { neue_montreal } from '@/fonts';
 
 export default function index(){
   const [isActive, setIsActive] = useState(false);
+  const header = useRef(null);
+  const pathname = usePathname();
+  const button = useRef(null);
+
+  useEffect(() => {
+    if (isActive) setIsActive(false)
+  }, [pathname])
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    gsap.to(button.current, {
+      scrollTrigger:{
+        trigger: document.documentElement,
+        start:0,
+        end: window.innerHeight,
+        onLeave: ()=>{gsap.to(button.current, {scale:1, duration: 0.25, ease: 'power1.out' })},
+        onEnterBack: ()=>{gsap.to(button.current, {scale:0, duration: 0.25, ease:'power1.out'}, setIsActive(false))}
+      }
+    })
+  }, [])
+  
 
   return (
     <>
-    <div className={styles.main}>
-      <div className={styles.header}>
-        <div onClick={()=>{setIsActive(!isActive)}} className={styles.button}>
-          <div className={`${styles.burger} ${isActive ? styles.burgerActive:""}`}></div>
+    <div ref={header} className={`${styles.header} ${neue_montreal.className}`}>
+      <div className={styles.logo}>
+        <p className={styles.copyright}>©</p>
+        <div className={styles.name}>
+          <p className={styles.codeby}>Code by</p>
+          <p className={styles.caleb} >Trivendra</p>
+          <p className={styles.wayne}>Lader</p>
         </div>
       </div>
+
+      <div className={styles.nav}>
+        <Magnetic>
+          <div className={styles.el}>
+            <Link className={styles.link} href='/work'>Work</Link>
+            <div className={styles.indicator}></div>
+          </div>
+        </Magnetic>
+        <Magnetic>
+          <div className={styles.el}>
+            <Link className={styles.link} href='/about'>About Me</Link>
+            <div className={styles.indicator}></div>
+          </div>
+        </Magnetic>
+        <Magnetic>
+          <div className={styles.el}>
+            <Link className={styles.link} href='/contact'>Contact</Link>
+            <div className={styles.indicator}></div>
+          </div>
+        </Magnetic>
+      </div>
+    </div>
+    <div ref={button} className={`${styles.headerButtonContainer} ${neue_montreal.className}`}>
+      <Rounded onClick={()=>{setIsActive(!isActive)}} className={`${styles.button}`}>
+        <div className={`${styles.burger} ${isActive ? styles.burgerActive: ""}`}></div>
+      </Rounded>
     </div>
 
     <AnimatePresence mode="wait">
-        {isActive && <Nav />}
+      {isActive && <Nav className={`${neue_montreal.className}`} />}
     </AnimatePresence>
     </>
   )
